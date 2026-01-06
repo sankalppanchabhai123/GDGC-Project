@@ -1,0 +1,144 @@
+.mainContainer{
+    padding-top: 20vh;
+    /* height: 100vh; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.infoContainer h1{
+    font-family: 'Open Sans';
+    font-size: 65px;
+}
+
+.key1{
+    font-size: 100px;
+}
+
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.infoContainer h1 span{
+    color: #4285F4;
+}
+
+
+
+.numbers{
+    box-sizing: border-box;
+    /* padding: 20px; */
+    /* background-color: aqua; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.numbers h1{
+    text-align: center;
+    font-size: 50px;
+    position: relative;
+}
+
+.numbers h1:nth-child(3)::after{
+    content: "+";
+    position: absolute;
+    top: -2%;
+    left: 95%;
+    animation: opacity 2s ease-in-out;
+}
+
+.upComingEventsContainer h1, .prevEventsContainer h1{
+    color: #4285F4;
+    font-size: 50px;
+
+}
+@keyframes opacity {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.numbers h1 span{
+    font-size: 30px;
+    display: block;
+    color: var(--color);
+}
+
+.eventsContainer{
+    margin-top: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    overflow-x: hidden;
+}
+
+.upComingEventsContainer, .prevEventsContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 50px;
+    /* align-content: flex-end; */
+    /* flex-basis: 10%; */
+}
+
+.upComingEventsContainer{
+    justify-content: start;
+}
+
+.cards{
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+/* .upComingEventsContainer h1{
+    color: #999;
+} */
+
+.cards h1.noEventInfo{
+    color: #fff;
+}
+
+.mainContainer.dark{
+    color: #fff;
+}
+
+@media (max-width: 800px) {
+    h1{
+        font-size: 30px;
+    }
+
+    .upComingEventsContainer h1, .prevEventsContainer h1{
+        font-size: 35px;
+    }
+
+    .numbers h1{
+        font-size: 30px;
+    }
+    .numbers h1:nth-child(3):after{
+        left: 90%;
+    }
+
+    .numbers h1 span{
+        width: 100%;
+        font-size: 23px;
+    }
+
+}
