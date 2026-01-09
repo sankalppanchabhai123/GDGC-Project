@@ -1,31 +1,64 @@
-// Import the functions you need from the SDKs you need
-// <<<<<<< HEAD
-// import "dotenv/config"
-// =======
-// import "dotenv/config.js"
-// >>>>>>> 97ef6bc988f912c89113c3155baa8c13a2eb5ffd
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+if (!process.env.REACT_APP_projectId) {
+  console.error("❌ ENV not loaded properly (.env issue)");
+} else {
+  console.log("✅ ENV variables loaded correctly");
+}
+
+/* =======================
+   2️⃣ FIREBASE CONFIG
+======================= */
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_apiKey,
-    authDomain: process.env.REACT_APP_authDomain,
-    projectId: process.env.REACT_APP_projectId,
-    storageBucket: process.env.REACT_APP_storageBucket,
-    messagingSenderId: process.env.REACT_APP_messagingSenderId,
-    appId: process.env.REACT_APP_appId,
-    measurementId: process.env.REACT_APP_measurementId
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+/* =======================
+   3️⃣ INITIALIZE FIREBASE
+======================= */
+let app;
+let db;
 
-const db = getFirestore(app)
+try {
+  app = initializeApp(firebaseConfig);
+  console.log("🔥 Firebase initialized successfully");
 
-export { db }
+  db = getFirestore(app);
+  console.log("📦 Firestore instance created");
+
+  // Analytics (only works in browser)
+  getAnalytics(app);
+
+} catch (error) {
+  console.error("❌ Firebase initialization failed:", error);
+}
+
+/* =======================
+   4️⃣ FIRESTORE CONNECTION TEST
+======================= */
+const checkFirestoreConnection = async () => {
+  try {
+    const testRef = doc(db, "test", "connection"); // create this doc once
+    await getDoc(testRef);
+
+    console.log("🟢 Firestore CONNECTED (online)");
+  } catch (error) {
+    console.error("🔴 Firestore NOT connected:", error.message);
+  }
+};
+
+checkFirestoreConnection();
+
+/* =======================
+   EXPORT DB
+======================= */
+export { db };

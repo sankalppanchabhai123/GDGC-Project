@@ -1,21 +1,22 @@
 
 
-.container{
+.container {
     padding-top: 90px;
     padding-bottom: 20px;
-    z-index: 3;
     position: relative;
-    /* height: 100vh; */
+    z-index: 3;
     width: 100%;
     display: flex;
-    /* justify-content: space-around; */
     align-items: center;
     gap: 100px;
     flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
+    overflow: hidden;
 
+    background-image: url('/src/assets/teamsBg.png');
+
+    
+    background-blend-mode: overlay;
+}
 .container.dark{
     color: #fff;
 }
@@ -56,14 +57,15 @@
 .bgg{
     position: absolute;
     left: 0px;
-    top: 70px;
+    top: 80px;
     z-index: -1;
     opacity: 0.8;
+    
 }
 
 .bgy{
     position: absolute;
-    right: 300px;
+    right: 0px;
     z-index: -1;
     scale: 2;
     top: 400px;
@@ -74,6 +76,7 @@
 .head{
     width: 55%;
     padding-bottom: 50px;
+    margin-top: 15px;
 }
 
 @media (max-width: 800px) {

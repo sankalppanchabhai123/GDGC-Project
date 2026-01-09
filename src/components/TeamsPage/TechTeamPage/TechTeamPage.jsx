@@ -58,9 +58,7 @@ const TechTeamPage = ({ data }) => {
 
                 {
 
-                    data.map((current, idx) => <TeamCard key={idx} current={current} />)
-
-                    // info.teams.technical.coord.map((current, idx) => <TeamCard key={idx} current={current} />)
+                     info.teams.technical.coord.map((current, idx) => <TeamCard key={idx} current={current} />)
 
                 }
 

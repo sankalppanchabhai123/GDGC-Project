@@ -9,7 +9,7 @@ import 'aos/dist/aos.css';
 const EventCard = ({ current }) => {
   const theme = useContext(ThemeContext);
   useEffect(() => {
-    Aos.init();
+    Aos.init({ once: true });
   }, []);
 
   const redirect = (link) => {
@@ -28,7 +28,7 @@ const EventCard = ({ current }) => {
       <div className={classes.btns}>
         <Button label="Register" cursorValue={`${current.register ? "pointer" : "not-allowed"}`} bgColor={current.register ? current.color : "#252525"} onClick={current.register ? () => redirect(current.register) : null}/>
         <Button label="View More" bgColor={current.color} onClick={() => redirect(current.more)}/>
-      </div>
+      </div> 
     </div>
   )
 };
