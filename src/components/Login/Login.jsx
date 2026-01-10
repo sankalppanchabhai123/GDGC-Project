@@ -51,12 +51,14 @@ const Login = () => {
     }
 
     try {
-      await doSignInWithEmailAndPassword(
+      const userCredential = await doSignInWithEmailAndPassword(
         userdata.email,
         userdata.password
       );
-      console.log(" login successfull witth dosign function");
-      
+
+      const uid = userCredential.user.uid; // ✅ UID here
+      console.log("UID:", uid);
+
       navigate("/admin", { replace: true });
     } catch (error) {
       console.error("❌ Login Failed:", error.message);

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./LeftBar.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContexts";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../firebase/connect";
+import { getActiveUserData } from "../../../getData/getActiveUserData";
 import {
   HiOutlineViewGrid,
   HiOutlineUsers,
@@ -14,15 +14,33 @@ import {
   HiOutlineMenu
 } from "react-icons/hi";
 
-const LeftBar = () => {
-  const { userLoggedIn } = useAuth();
-  const navigate = useNavigate();
+const LeftBar = ({ activeTab, onTabChange }) => {
+  const { userLoggedIn, currentUser } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const [activeUserData, setActiveUserData] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchActiveUser = async () => {
+      if (!currentUser?.uid) return;
+      const data = await getActiveUserData(currentUser.uid);
+      if (mounted) setActiveUserData(data);
+    };
+
+    fetchActiveUser();
+
+    return () => {
+      mounted = false;
+    };
+  }, [currentUser?.uid]);
+
+ 
+  
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/login-signup");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -31,11 +49,11 @@ const LeftBar = () => {
   const toggleCollapse = () => setCollapsed((c) => !c);
 
   const menuItems = [
-    { name: "Dashboard", icon: <HiOutlineViewGrid size={20} />, path: "/admin" },
-    { name: "Users", icon: <HiOutlineUsers size={20} />, path: "/admin/users" },
-    { name: "Events", icon: <HiOutlineCalendar size={20} />, path: "/admin/events" },
-    { name: "Members", icon: <HiOutlineUserGroup size={20} />, path: "/admin/members" },
-    { name: "Settings", icon: <HiOutlineCog size={20} />, path: "/admin/settings" },
+    { key: "dashboard", name: "Dashboard", icon: <HiOutlineViewGrid size={20} /> },
+    { key: "users", name: "Users", icon: <HiOutlineUsers size={20} /> },
+    { key: "events", name: "Events", icon: <HiOutlineCalendar size={20} /> },
+    { key: "members", name: "Members", icon: <HiOutlineUserGroup size={20} /> },
+    { key: "settings", name: "Settings", icon: <HiOutlineCog size={20} /> },
   ];
 
   return (
@@ -45,54 +63,43 @@ const LeftBar = () => {
     >
       <div className={classes.brand}>
         <div className={classes.logo}>
-          <span className={classes.logoMark}>GDGC</span>
-          <span className={classes.logoText}>Admin</span>
+          <span className={classes.logoMark}>{activeUserData.role}</span>
+          <span className={classes.logoText}>{activeUserData.name}</span>
         </div>
         <button
           className={classes.toggle}
           onClick={toggleCollapse}
           aria-expanded={!collapsed}
-          aria-label="Toggle sidebar"
         >
           <HiOutlineMenu size={20} />
         </button>
       </div>
 
-      <nav role="navigation" aria-label="Admin menu" className={classes.nav}>
+      <nav className={classes.nav}>
         <ul>
           {menuItems.map((item) => (
-            <li key={item.name} className={classes.navItem}>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `${classes.navlink} ${isActive ? classes.active : ""}`
-                }
+            <li key={item.key} className={classes.navItem}>
+              <button
+                type="button"
+                onClick={() => onTabChange(item.key)}
+                className={`${classes.navlink} ${
+                  activeTab === item.key ? classes.active : ""
+                }`}
               >
-                <span className={classes.icon} aria-hidden>
-                  {item.icon}
-                </span>
+                <span className={classes.icon}>{item.icon}</span>
                 <span className={classes.label}>{item.name}</span>
-              </NavLink>
+              </button>
             </li>
           ))}
         </ul>
       </nav>
 
       <div className={classes.footer}>
-        {userLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className={classes.logout}
-            aria-label="Logout"
-            title="Log out"
-          >
+        {userLoggedIn && (
+          <button onClick={handleLogout} className={classes.logout}>
             <HiOutlineLogout size={20} />
             <span className={classes.label}>Logout</span>
           </button>
-        ) : (
-          <NavLink to="/login-signup" className={classes.loginLink}>
-            <span className={classes.label}>Sign in</span>
-          </NavLink>
         )}
       </div>
     </aside>
