@@ -4,40 +4,45 @@ import bg from "../../assets/grp277.png";
 import logo from "../../assets/logo.png";
 import { ThemeContext } from "../../App";
 import { AnimatePresence, motion } from "framer-motion";
-import { getUserData } from "../../getData/getUserData";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useNavigate } from "react-router-dom";
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+import { useAuth } from "../../contexts/authContexts";
 
 const Login = () => {
   const theme = useContext(ThemeContext);
+  const navigate = useNavigate();
+
+  const { userLoggedIn, loading } = useAuth();
 
   const [userdata, setUserdata] = useState({
     email: "",
     password: "",
   });
 
-  const [dataArray, setDataArray] = useState([]);
-  const [logged, setLogged] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   /* =========================
-     FETCH USERS DATA
+     AOS INIT
   ========================== */
   useEffect(() => {
     AOS.init({ duration: 1000 });
-
-    async function fetchUsers() {
-      const data = await getUserData();
-      setDataArray(data);
-      console.log("Fetched Users:", data);
-    }
-
-    fetchUsers();
-  }, []); 
+  }, []);
 
   /* =========================
-     LOGIN CHECK
+     AUTO REDIRECT IF LOGGED IN
   ========================== */
-  const openMsg = (e) => {
+  useEffect(() => {
+    if (!loading && userLoggedIn) {
+      navigate("/admin", { replace: true });
+    }
+  }, [userLoggedIn, loading, navigate]);
+
+  /* =========================
+     FIREBASE LOGIN
+  ========================== */
+  const openMsg = async (e) => {
     e.preventDefault();
 
     if (!userdata.email || !userdata.password) {
@@ -45,30 +50,30 @@ const Login = () => {
       return;
     }
 
-    const userFound = dataArray.find(
-      (user) =>
-        user.username === userdata.email &&
-        user.password === userdata.password
-    );
-
-    if (userFound) {
-      console.log("✅ Login Successful", userFound);
-      alert("Login Successful ✅");
-
-      localStorage.setItem("loggedInUser", JSON.stringify(userFound));
-      setLogged(false);
-
-      // Redirect if needed
-      // navigate("/dashboard");
-    } else {
-      console.log("❌ Login Failed");
-      setLogged(true);
+    try {
+      await doSignInWithEmailAndPassword(
+        userdata.email,
+        userdata.password
+      );
+      console.log(" login successfull witth dosign function");
+      
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      console.error("❌ Login Failed:", error.message);
+      setLoginError(true);
     }
   };
 
   const closeMsg = () => {
-    setLogged(false);
+    setLoginError(false);
   };
+
+  /* =========================
+     LOADING STATE
+  ========================== */
+  if (loading) {
+    return null; // or <Loader />
+  }
 
   /* =========================
      UI
@@ -79,8 +84,8 @@ const Login = () => {
         theme.theme === "light" ? classes.light : classes.dark
       }`}
     >
-      <div className={`${classes.main2} ${logged ? classes.overlay : ""}`}>
-        <img src={bg} className={classes.mainbg} alt="" />
+      <div className={`${classes.main2} ${loginError ? classes.overlay : ""}`}>
+        <img src={bg} className={classes.mainbg} alt="background" />
 
         <div className={classes.left_body}>
           <motion.img
@@ -93,8 +98,7 @@ const Login = () => {
           />
 
           <p className={classes.mp}>
-            <span className={classes.welcome}>WELCOME</span> Techie
-            <span className={classes.expp}>!</span>
+            <span className={classes.welcome}>WELCOME</span> Techie!
           </p>
 
           <p className={classes.please}>Please enter your details!</p>
@@ -105,7 +109,7 @@ const Login = () => {
             animate={{ rotateY: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <form className={classes.contactform}>
+            <form className={classes.contactform} onSubmit={openMsg}>
               <label className={classes.label}>Email</label>
               <input
                 type="email"
@@ -114,7 +118,6 @@ const Login = () => {
                 onChange={(e) =>
                   setUserdata({ ...userdata, email: e.target.value })
                 }
-                placeholder="Enter your Email"
                 required
               />
 
@@ -126,15 +129,10 @@ const Login = () => {
                 onChange={(e) =>
                   setUserdata({ ...userdata, password: e.target.value })
                 }
-                placeholder="**************"
                 required
               />
 
-              <button
-                className={classes.signin}
-                onClick={openMsg}
-                type="submit"
-              >
+              <button className={classes.signin} type="submit">
                 Sign In
               </button>
             </form>
@@ -142,21 +140,17 @@ const Login = () => {
         </div>
       </div>
 
-      {/* =========================
-          ERROR POPUP
-      ========================== */}
       <AnimatePresence>
-        {logged && (
+        {loginError && (
           <motion.div
             className={classes.message}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5 }}
           >
             <span onClick={closeMsg}></span>
             <h1>Sorry 😕</h1>
-            <h2>Seems like you are not a GDSC Team Member</h2>
+            <h2>Invalid email or password</h2>
           </motion.div>
         )}
       </AnimatePresence>

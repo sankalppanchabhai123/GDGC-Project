@@ -35,13 +35,6 @@ let info = [
         iconName: 'local_post_office',
 
     },
-    {
-        name: 'Login',
-        to: '/login-signup',
-        iconName: 'login',
-
-    },
-    
 ]
 
 export default info;

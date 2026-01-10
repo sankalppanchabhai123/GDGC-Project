@@ -1,16 +1,10 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-
-
-if (!process.env.REACT_APP_projectId) {
-  console.error("❌ ENV not loaded properly (.env issue)");
-} else {
-  console.log("✅ ENV variables loaded correctly");
-}
 
 /* =======================
-   2️⃣ FIREBASE CONFIG
+   FIREBASE CONFIG
 ======================= */
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_apiKey,
@@ -23,42 +17,26 @@ const firebaseConfig = {
 };
 
 /* =======================
-   3️⃣ INITIALIZE FIREBASE
+   INITIALIZE FIREBASE
 ======================= */
 let app;
 let db;
+let auth;
 
 try {
   app = initializeApp(firebaseConfig);
-  console.log("🔥 Firebase initialized successfully");
-
   db = getFirestore(app);
-  console.log("📦 Firestore instance created");
+  auth = getAuth(app);
 
-  // Analytics (only works in browser)
+  // Analytics (browser only)
   getAnalytics(app);
 
+  console.log("🔥 Firebase initialized successfully");
 } catch (error) {
   console.error("❌ Firebase initialization failed:", error);
 }
 
 /* =======================
-   4️⃣ FIRESTORE CONNECTION TEST
+   EXPORTS
 ======================= */
-const checkFirestoreConnection = async () => {
-  try {
-    const testRef = doc(db, "test", "connection"); // create this doc once
-    await getDoc(testRef);
-
-    console.log("🟢 Firestore CONNECTED (online)");
-  } catch (error) {
-    console.error("🔴 Firestore NOT connected:", error.message);
-  }
-};
-
-checkFirestoreConnection();
-
-/* =======================
-   EXPORT DB
-======================= */
-export { db };
+export { app, db, auth };
