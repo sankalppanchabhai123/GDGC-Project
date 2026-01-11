@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import classes from "./Navbar.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import lightLogo from "../../assets/nav_logo_light.png";
 import darkLogo from "../../assets/nav_logo_dark.png";
 import { LightDarkButton } from "../common";
@@ -91,8 +91,8 @@ const Navbar = () => {
             {/* LOGIN / LOGOUT button */}
             <li className={classes.navbar_item} onClick={collapse}>
               {userLoggedIn ? (
-                <button
-                  onClick={handleLogout}
+               <NavLink  to="/admin">
+                 <button
                   className={classes.link_text}
                   style={{
                     background: "none",
@@ -100,13 +100,9 @@ const Navbar = () => {
                     cursor: "pointer",
                   }}
                 >
-                  <span
-                    className={`material-symbols-outlined ${classes.icon}`}
-                  >
-                    logout
-                  </span>
-                  Logout
+                  Admin
                 </button>
+               </NavLink>
               ) : (
                 <NavLink
                   to="/login-signup"

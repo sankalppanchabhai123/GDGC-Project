@@ -13,7 +13,7 @@ export async function getAllTeamsData() {
     // }
 
     // 2. Get a reference to the "team" collection
-    const teamCollectionRef = collection(db, "team" , "technical" ,"web" );
+    const teamCollectionRef = collection(db, "team"  );
 
     // 3. Fetch all documents from the collection
     // No need for a separate `query()` call if you're not adding `where` clauses or ordering

@@ -5,8 +5,20 @@ import classes from '../TechTeamPage/TechTeamPage.module.css'
 import bgr from '../../../assets/redball.png'
 import bgg from '../../../assets/bgg.png'
 import bgb from '../../../assets/blueball.png'
+import { getAllTeamsData } from '../../../getData/getAllTeamsData'
 
 const PRTeam = ({ data }) => {
+    
+    
+      const TeamData = data.filter((doc) =>
+        ["design" ,"pr" ,"media"].includes(doc.domain)
+      );
+    
+      const Leads = TeamData.filter((member) => member.position === "lead" || member.position === "president");
+      const Coords = TeamData.filter(
+        (member) => member.position === "coor"
+      );
+
     return (
         <>
             <img src={bgr} alt='' className={classes.bgrp} />
@@ -16,7 +28,7 @@ const PRTeam = ({ data }) => {
             <div className={`${classes.prTeam} ${classes.cardContainers}`}>
                 {
                     // data.map((current, idx) => <TeamCard key={idx} current={current} />)
-                    info.teams.pr.lead.map((current, idx) => <TeamCard key={idx} current={current} />)
+                    Leads.map((current, idx) => <TeamCard key={idx} current={current} />)
                 }
             </div>
         </>
