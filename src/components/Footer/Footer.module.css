@@ -1,5 +1,4 @@
 .main {
-    background: url("../../assets/footerBg.svg");
     height: 50vh;
     z-index: 3;
     width: 100%;
@@ -7,9 +6,57 @@
     align-items: center;
     position: relative;
     justify-content: space-around;
-    /* gap: 50px; */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+/* Dark theme (default) */
+.main.dark {
+    background: url("../../assets/footerBg.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+}
+
+/* Light theme - using same layout but different colors */
+.main.light {
+    background: url("../../assets/footerBg.svg"); /* Use same background or create light version */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: invert(1) hue-rotate(180deg); /* Quick fix to invert colors */
+    color: #ffffff;
+}
+
+/* Reset filter for content inside light theme */
+/* .main.light .logo, */
+.main.light .links,
+.main.light .connect,
+.main.light h2,
+.main.light a,
+.main.light svg {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* Alternative approach if you want solid color with proper text colors */
+.main.light-solid {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.main.light-solid h2 {
+    color: #1a73e8; /* Google blue */
+    font-weight: 600;
+}
+
+.main.light-solid ul a {
+    color: #5f6368; /* Google gray */
+}
+
+.main.light-solid ul a:hover {
+    color: #1a73e8; /* Google blue on hover */
+}
 
 .main .logo {
     margin-top: 5em;
@@ -27,12 +74,16 @@
     display: flex;
     flex-direction: column;
     list-style-type: none;
-    gap: 5px;
+    gap: 8px;
 }
 
 .main h2 {
     color: #eee;
     font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .main ul a {
@@ -41,11 +92,21 @@
     display: inline-block;
     color: #ffffff80;
     position: relative;
-    transition: .5s ease-in-out;
+    transition: .3s ease-in-out;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.main.dark ul a {
+    color: #bdc1c6; /* Google dark theme text color */
+}
+
+.main.light ul a {
+    color: #5f6368; /* Google light theme text color */
 }
 
 .main ul a:hover{
-    color: white;
+    color: #1a73e8; /* Google blue for both themes */
     transition-duration: 0s;
 }
 
@@ -61,34 +122,37 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* gap: 20px; */
     flex-wrap: wrap;
+    gap: 15px;
 }
 
-
+.connect h2 {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
 
 @media screen and (max-width: 1000px) {
     .main .links{
         gap: 3vw;
     }
     .main ul a{
-        font-size: small;
+        font-size: 0.9rem;
     }
 }
 
 @media screen and (max-width: 800px) {
     .main{
         height: fit-content;
-        background-repeat: no-repeat;
         background-size: cover;
         flex-direction: column;
         gap: 50px;
-        background-position: center;
-        padding-bottom: 20px;
+        padding: 40px 20px;
         margin-bottom: 0;
     }
     .main .logo{
         padding: 0 10px;
+        margin-top: 2em;
     }
     .main .links{
         width: 100%;
@@ -102,10 +166,13 @@
         width: 90%;
     }
     .main .connect h2{
-        display: none;
+        display: block;
+        margin-top: 20px;
     }
     .main .connect ul{
-        justify-content: space-around;
+        justify-content: center;
         flex-direction: row;
+        height: auto;
+        gap: 20px;
     }
 }
