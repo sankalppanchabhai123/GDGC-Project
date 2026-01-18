@@ -176,3 +176,16 @@
         gap: 20px;
     }
 }
+.footerLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footerLogoImg {
+  height: 350px;          /* adjust if needed */
+  width: auto;
+  max-width: 400px;      /* adjust if needed */
+  object-fit: contain;
+}

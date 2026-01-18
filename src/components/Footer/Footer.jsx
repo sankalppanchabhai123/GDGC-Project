@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 import classes from "./Footer.module.css";
 import FooterLogo from "../common/SVGs/FooterLogo";
+import { NavLink } from "react-router-dom";
+import lightLogo from "../../assets/nav_logo_light.png";
+import darkLogo from "../../assets/nav_logo_dark.png";
 import GithubIcon from "../common/SVGs/Github";
 import LinkedIn from "../common/SVGs/LinkedIn";
 import Insta from "../common/SVGs/Insta";
@@ -32,9 +35,16 @@ const Footer = () => {
  
   return (
     <div className={`${classes.main} ${isLight ? classes.light : classes.dark}`}>
-      <div className={classes.logo}>
-  <FooterLogo color1={logoColors.color1} color2={logoColors.color2} />
+      <div className={classes.footerLogo}>
+  <NavLink to="/">
+    <img
+      src={theme.theme === "light" ? lightLogo : darkLogo}
+      alt="logo"
+      className={classes.footerLogoImg}
+    />
+  </NavLink>
 </div>
+
 
 
       <div className={classes.links}>
