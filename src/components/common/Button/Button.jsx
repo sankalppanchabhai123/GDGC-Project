@@ -13,6 +13,7 @@ const Button = (
   padding = "0.5em 1.5em",
   fontSize = "17px",
   color = "#39bda7",
+  textColor,
   margin = "",
   borderRadius = "",
   bgColor= "",
@@ -25,7 +26,7 @@ const Button = (
   return (
     <>
       <button
-        style={{ padding: padding, backgroundColor: bgColor, borderRadius:borderRadius, fontSize: fontSize, "--hover-color": color, cursor: cursorValue, margin: margin, }}
+        style={{ padding: padding, backgroundColor: bgColor, borderRadius:borderRadius, fontSize: fontSize, "--hover-color": color, cursor: cursorValue, margin: margin, color: textColor }}
         className={classes.button}
         onClick={onClick}
         disabled={disabled}

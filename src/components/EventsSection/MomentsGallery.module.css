@@ -1,0 +1,107 @@
+.momentsSection {
+  padding: 80px 6%;
+  text-align: center;
+}
+
+.momentsSection.dark {
+  background: #0f0f0f;
+  color: #ffffff;
+}
+
+.heading {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* 🔘 BUTTONS */
+.eventButtons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.eventBtn {
+  padding: 12px 22px;
+  border-radius: 30px;
+  border: 2px solid;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.eventBtn:hover {
+  transform: translateY(-2px);
+}
+
+.eventBtn.active {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 🟦 BIG RECTANGLE */
+.imageContainer {
+  max-width: 900px;
+  height: 420px;
+  margin: 0 auto 30px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 📄 INFO */
+.eventInfo {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.eventInfo h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.date {
+  font-size: 0.95rem;
+  color: #777;
+}
+
+.momentsSection.dark .date {
+  color: #aaa;
+}
+
+.eventInfo p {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.momentsSection.dark .eventInfo p {
+  color: #ccc;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+  .imageContainer {
+    height: 300px;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageContainer {
+    height: 240px;
+  }
+}
