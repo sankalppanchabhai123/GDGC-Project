@@ -16,7 +16,7 @@ export const createUserDocument = async ({
   name,
   email,
   imgurl,
-  role = "user",
+  role ,
 }) => {
   if (!uid || !email) {
     throw new Error("UID and Email are required");

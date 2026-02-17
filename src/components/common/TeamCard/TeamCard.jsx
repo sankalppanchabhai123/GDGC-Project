@@ -15,16 +15,19 @@ const TeamCard = ({ current }) => {
 
   const heights = "20px";
   const theme = useContext(ThemeContext);
-  // console.log({ ...current.socials }.insta);
+  console.log( current.imgurl);
+  console.log( current.instagram);
+
+  
   const handleClick = (link) => {
     if (link === "insta") {
-      window.open({ ...current.socials }.insta, "_blank");
+      window.open(current.instagram, "_blank");
     }
     if (link === "linkedin") {
-      window.open({ ...current.socials }.linkedin, "_blank");
+      window.open(current.linkedin, "_blank");
     }
     if (link === "github") {
-      window.open({ ...current.socials }.github, "_blank");
+      window.open(current.github, "_blank");
     }
   };
   return (
@@ -37,7 +40,7 @@ const TeamCard = ({ current }) => {
       <div className={classes.imgDiv}>
         <ImgBg imgColor={`${theme.theme === "dark" ? "#ccc" : "#222"}`} />
         <div className={classes.imgContainer}>
-          <img src={current.img} alt="Profile" />
+          <img src={current.imgurl} alt="Profile" />
         </div>
       </div>
       <div className={classes.info}>

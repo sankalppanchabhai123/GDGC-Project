@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LeftBar from "../components/Admin/leftBar/LeftBar";
 import AddUser from "../components/Admin/AddUsers/AddUser";
+import AddMember from "../components/Admin/Addmember/AddMembers";
 
 
 
@@ -11,6 +12,8 @@ const AdminPage = () => {
     switch (activeTab) {
       case "users":
         return <AddUser />;
+      case"members":
+         return <AddMember/>;
       default:
         return <div> please select the tab</div>
     }

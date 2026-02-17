@@ -11,7 +11,6 @@ import TechTeamPage from './TechTeamPage/TechTeamPage'
 import DesignTeam from './DesignTeamPage/DesignTeam'
 import ManagementTeam from './ManagementTeam/ManagementTeam'
 import PRTeam from './PRTeam/PRTeam'
-import { getTeamsData , } from '../../getData/getTeamsData'
 import { getAllTeamsData  } from '../../getData/getAllTeamsData'
 
 import { ThemeContext } from '../../App'
@@ -286,19 +285,16 @@ const TeamsPage = () => {
   const [dataArray, setDataArray] = useState([])
   const [leads, setLeads] = useState([])
 
-  useEffect(() => {
-    async function getData() {
-      const data = await getAllTeamsData(teamName)
-      setDataArray(data)
-      console.log( data);
-    }
+  const [teamData, setTeamData] = useState([]);
     
-    getData()
-    console.log(dataArray);
+      useEffect(() => {
+        const fetchData = async () => {
+          const data = await getAllTeamsData();
+          setTeamData(data);
+        };
     
-    
-  }, [teamName])
-
+        fetchData();
+      }, []);
 
 
   return (
@@ -321,10 +317,10 @@ const TeamsPage = () => {
 
       </div>
       {
-        teamName === "technical" ? <TechTeamPage data={dataArray} /> :
-          teamName === "design" ? <DesignTeam data={dataArray} /> :
-            teamName === "management" ? <ManagementTeam data={dataArray} /> :
-              teamName === "pr" ? <PRTeam data={dataArray} /> : null
+        teamName === "technical" ? <TechTeamPage data={teamData} /> :
+          teamName === "design" ? <DesignTeam data={teamData} /> :
+            teamName === "management" ? <ManagementTeam data={teamData} /> :
+              teamName === "pr" ? <PRTeam data={teamData} /> : null
       }
 
       {/* new added */}
