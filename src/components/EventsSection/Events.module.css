@@ -1,160 +1,158 @@
-.container {
+.wrapper[data-theme='light'] {
+  --bg-page: #ffffff;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --card-bg: #ffffff;
+  --border-color: #e8eaed;
+}
+
+.wrapper[data-theme='dark'] {
+  --bg-page: #151515;
+  --text-primary: #ffffff;
+  --text-secondary: #bdc1c6;
+  --card-bg: #242526;
+  --border-color: #3c4043;
+}
+
+.wrapper {
+  background-color: var(--bg-page);
   min-height: 100vh;
-  padding: 50px 20px;
-  transition: all 0.4s ease;
+  padding: 120px 20px 60px 20px;
+  transition: background-color 0.3s ease;
 }
 
-/* LIGHT MODE */
-.light {
-  background: #f9fafb;
-  color: #111827;
-}
+.container { max-width: 1200px; margin: 0 auto; }
 
-/* DARK MODE */
-.dark {
-  background: #242526;
-  color: #f1f5f9;
-}
-
-/* Title */
-.title {
-  text-align: center;
-  font-size: 2.8rem;
-  font-weight: 700;
+.sectionTitle {
+  font-size: 3.5rem; 
+  font-weight: 800;
+  color: var(--text-primary);
   margin-bottom: 40px;
+  letter-spacing: -1.5px;
 }
 
-/* Stats Section */
-.statsContainer {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-bottom: 50px;
-}
-
-.statCard {
-  padding: 25px 35px;
-  border-radius: 12px;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.light .statCard {
-  background: white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-}
-
-.dark .statCard {
-  background: #000000;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.statCard:hover {
-  transform: translateY(-5px);
-}
-
-/* Tabs */
-.tabs {
-  margin-top: 150px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.tabButton {
-  padding: 10px 22px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-.light .tabButton {
-  border: 1px solid #d1d5db;
-  background: white;
-  color: #111827;
-}
-
-.dark .tabButton {
-  border: 1px solid #334155;
-  background: #1e293b;
-  color: #f1f5f9;
-}
-
-.active {
-  background: #2563eb !important;
-  color: white !important;
-  border: none !important;
-}
-
-/* Events Grid */
-.eventsGrid {
-  padding: 0 clamp(20px, 8vw, 200px);
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
 }
 
-/* Card */
 .card {
-  border-radius: 14px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-}
-
-.light .card {
-  background: white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.dark .card {
-  background: #1e293b;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-8px);
+  border-color: var(--hover-color);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.image {
+.logoWrapper {
+  position: relative;
+  width: 130px; 
+  height: 130px;
+  margin-bottom: 20px;
+}
+
+.logoCircle {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.logoCircle::before {
+  content: "";
+  position: absolute;
+  inset: -4px; 
+  border-radius: 50%;
+  padding: 4px; 
+  background: conic-gradient(#4285F4 90deg, #EA4335 90deg 180deg, #FBBC04 180deg 270deg, #34A853 270deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.imageFrame {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.cardContent {
-  padding: 20px;
-}
-
-.description {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin-bottom: 15px;
-}
-
-.meta {
+  height: 100%;
+  background: #ffffff;
+  border-radius: 50%;
+  overflow: hidden;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border-color);
 }
 
-/* Register Button */
-.registerBtn {
-  margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #2563eb;
-  color: white;
+.eventImage {
+  width: 100%; /* Changed to fill frame as it is now an official URL image */
+  height: 100%;
+  object-fit: cover; /* Ensures photos don't stretch */
+}
+
+.date {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.type {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.title {
+  font-size: 1.1rem;
+  color: #4285F4;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  line-height: 1.3;
 }
 
-.registerBtn:hover {
-  background: #1d4ed8;
+.location {
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.registerBtn {
+  margin-top: 20px;
+  padding: 10px 30px;
+  background: #1a73e8;
+  color: #ffffff !important;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.registerBtn:hover { background: #174ea6; }
+
+.divider {
+  height: 2px;
+  background: var(--border-color);
+  margin: 60px 0;
+}
+
+.noEvents {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+  border: 2px dashed var(--border-color);
+  border-radius: 20px;
 }

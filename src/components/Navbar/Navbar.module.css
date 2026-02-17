@@ -19,6 +19,17 @@
   z-index: 4;
 }
 
+/* Add this to your NAVBAR'S CSS file, not the events file */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent */
+  backdrop-filter: blur(10px); /* Blur effect */
+  border-bottom: 1px solid #e8eaed;
+}
+
 .navbar.dark {
   background-color: #242526;
 }

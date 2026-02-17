@@ -1,66 +1,93 @@
-import React, { useState, useContext } from "react";
-import info from "./EventsInfo.jsx";
+import React, { useContext, useEffect } from "react";
 import styles from "./Events.module.css";
-import {ThemeContext} from "../../App.jsx" // adjust path if needed
+import { upcomingEvents, previousEvents } from "./EventsInfo.jsx";
+import { ThemeContext } from "../../App";
 
-export default function Events() {
-  const [activeTab, setActiveTab] = useState("upcoming");
+const Events = () => {
   const { theme } = useContext(ThemeContext);
+  const googleColors = ["#4285F4", "#EA4335", "#FBBC04", "#34A853"];
 
-  const events = activeTab === "upcoming" ? info.upcoming : info.previous;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <div
-      className={`${styles.container} ${
-        theme === "dark" ? styles.dark : styles.light
-      }`}
-    >
-      
-      {/* Tabs */}
-      <div className={styles.tabs}>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "upcoming" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("upcoming")}
-        >
-          Upcoming Events
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === "previous" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("previous")}
-        >
-          Previous Events
-        </button>
-      </div>
-
-      {/* Events Grid */}
-      <div className={styles.eventsGrid}>
-        {events.map((event) => (
-          <div key={event.id} className={styles.card}>
-            <img src={event.image} alt={event.title} className={styles.image} />
-
-            <div className={styles.cardContent}>
-              <h3>{event.title}</h3>
-              <p className={styles.description}>{event.description}</p>
-
-              <div className={styles.meta}>
-                <span>{event.date}</span>
-                <span>{event.time}</span>
+    <div className={styles.wrapper} data-theme={theme}>
+      <div className={styles.container}>
+        {/* UPCOMING SECTION */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Upcoming Events</h2>
+          <div className={styles.grid}>
+            {upcomingEvents.length > 0 ? (
+              upcomingEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  isUpcoming={true}
+                  accentColor="#4285F4"
+                />
+              ))
+            ) : (
+              <div className={styles.noEvents}>
+                No upcoming events. Stay tuned!
               </div>
-
-              <div className={styles.location}>📍 {event.location}</div>
-
-              {/* Register Button Only for Upcoming */}
-              {activeTab === "upcoming" && (
-                <button className={styles.registerBtn}>Register Now</button>
-              )}
-            </div>
+            )}
           </div>
-        ))}
+        </section>
+
+        <div className={styles.divider}></div>
+
+        {/* PAST SECTION */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Past Events</h2>
+          <div className={styles.grid}>
+            {previousEvents.map((event, index) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                isUpcoming={false}
+                accentColor={googleColors[index % googleColors.length]}
+              />
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
-}
+};
+
+const EventCard = ({ event, isUpcoming, accentColor }) => (
+  <div className={styles.card} style={{ "--hover-color": accentColor }}>
+    <div className={styles.logoWrapper}>
+      <div className={styles.logoCircle}>
+        <div className={styles.imageFrame}>
+          {/* Dynamic Image from eventInfo */}
+          <img
+            src={event.image || "https://via.placeholder.com/150"}
+            alt={event.title}
+            className={styles.eventImage}
+          />
+        </div>
+      </div>
+    </div>
+
+    <div className={styles.cardBody}>
+      <p className={styles.date}>{event.date}</p>
+      <h3 className={styles.type}>{event.type}</h3>
+      <h4 className={styles.title}>{event.title}</h4>
+      <p className={styles.location}>{event.location}</p>
+      {isUpcoming && (
+        <a
+          href={event.link}
+          className={styles.registerBtn}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Register Now
+        </a>
+      )}
+    </div>
+  </div>
+);
+
+export default Events;
