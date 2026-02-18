@@ -10,10 +10,11 @@ export async function getTeamsData(teamName) {
     }
 
     const dataRef = collection(db, "team")
-    const query1 = query(dataRef, where("subteam", "==", teamName || "technical"))
+    const query1 = query(dataRef)
     const data = await getDocs(query1)
     const formattedData = data.docs.map((doc) => ({...doc.data(), id: doc.id}));
     localStorage.setItem(teamName, JSON.stringify(formattedData))
     return formattedData
+
     // console.log(dataRef);
 }

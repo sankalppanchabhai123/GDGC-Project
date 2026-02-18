@@ -9,10 +9,35 @@
 }
 
 .h1 {
-    font-family: 'Open Sans';
-    font-size: 70px;
-    padding-bottom: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    color: #ffffff;
+    text-align: center;
+    padding-bottom: 12px;
+    margin: 40px 0;
+    position: relative;
 }
+
+/* Google underline */
+.h1::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 5px;
+    border-radius: 4px;
+    background: linear-gradient(
+        90deg,
+        #4285F4,
+        #DB4437,
+        #F4B400,
+        #0F9D58
+    );
+}
+
 
 
 

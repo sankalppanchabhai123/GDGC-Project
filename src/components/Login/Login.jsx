@@ -1,104 +1,163 @@
-import React, { useState, useEffect, useContext } from 'react'
-import classes from './Login.module.css'
-import bg from '../../assets/grp277.png'
-import logo from '../../assets/logo.png'
-import google from '../../assets/gi.png'
-import github from '../../assets/github.svg'
-import discord from '../../assets/discord.svg'
-import linkedin from '../../assets/linkedin.svg'
-import { ThemeContext } from '../../App';
-import { AnimatePresence, motion } from 'framer-motion';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useState, useEffect, useContext } from "react";
+import classes from "./Login.module.css";
+import bg from "../../assets/grp277.png";
+import logo from "../../assets/logo.png";
+import { ThemeContext } from "../../App";
+import { AnimatePresence, motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useNavigate } from "react-router-dom";
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+import { useAuth } from "../../contexts/authContexts";
 
 const Login = () => {
-  let [userdata, setuserdata] = useState({
+  const theme = useContext(ThemeContext);
+  const navigate = useNavigate();
+
+  const { userLoggedIn, loading } = useAuth();
+
+  const [userdata, setUserdata] = useState({
     email: "",
     password: "",
-  })
+  });
 
+  const [loginError, setLoginError] = useState(false);
+
+  /* =========================
+     AOS INIT
+  ========================== */
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const submitform = (e) => {
-    e.preventDefault();
-    // use this part to connect backend
-    // data accessed by userdat.name, userdata.email and userdata.message
-    console.log(e);
-    setuserdata({ name: "", email: "", message: "" })
-  }
-
-  const [logged, setLogged] = useState(false)
-
-  const openMsg = (e) => {
-    e.preventDefault()
-    if (!userdata.email || !userdata.password){
-      alert("Please fill all the fields")
-      return
+  /* =========================
+     AUTO REDIRECT IF LOGGED IN
+  ========================== */
+  useEffect(() => {
+    if (!loading && userLoggedIn) {
+      navigate("/admin", { replace: true });
     }
-    // window.scrollTo(250, 250);
-    setLogged(true)
-  }
+  }, [userLoggedIn, loading, navigate]);
+
+  /* =========================
+     FIREBASE LOGIN
+  ========================== */
+  const openMsg = async (e) => {
+    e.preventDefault();
+
+    if (!userdata.email || !userdata.password) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+    try {
+      const userCredential = await doSignInWithEmailAndPassword(
+        userdata.email,
+        userdata.password
+      );
+
+      const uid = userCredential.user.uid; // ✅ UID here
+      console.log("UID:", uid);
+
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      console.error("❌ Login Failed:", error.message);
+      setLoginError(true);
+    }
+  };
+
   const closeMsg = () => {
-    // window.scrollTo(150, 150);
-    setLogged(false)
+    setLoginError(false);
+  };
+
+  /* =========================
+     LOADING STATE
+  ========================== */
+  if (loading) {
+    return null; // or <Loader />
   }
 
-  const theme = useContext(ThemeContext);
-
+  /* =========================
+     UI
+  ========================== */
   return (
-    <div className={`${classes.main} ${theme.theme === "light" ? classes.light : classes.dark}`}>
-      <div className={`${classes.main2} ${logged ? classes.overlay : ""}`}>
-        <img src={bg} className={classes.mainbg} alt="" />
+    <div
+      className={`${classes.main} ${
+        theme.theme === "light" ? classes.light : classes.dark
+      }`}
+    >
+      <div className={`${classes.main2} ${loginError ? classes.overlay : ""}`}>
+        <img src={bg} className={classes.mainbg} alt="background" />
+
         <div className={classes.left_body}>
-          <motion.img className={classes.logo} src={logo}
+          <motion.img
+            className={classes.logo}
+            src={logo}
             initial={{ rotateY: 180 }}
             animate={{ rotateY: 0 }}
             transition={{ duration: 0.5 }}
-            alt="" />
-          <p className={classes.mp}><span className={classes.welcome}>WELCOME</span>  Techie<span className={classes.expp}> !</span></p>
+            alt="logo"
+          />
+
+          <p className={classes.mp}>
+            <span className={classes.welcome}>WELCOME</span> Techie!
+          </p>
+
           <p className={classes.please}>Please enter your details!</p>
 
-          <motion.div className={classes.main_conatct}
+          <motion.div
+            className={classes.main_conatct}
             initial={{ rotateY: 180 }}
             animate={{ rotateY: 0 }}
-            transition={{ duration: 0.5 }}>
-            <form name="myContact" className={classes.contactform} >
+            transition={{ duration: 0.5 }}
+          >
+            <form className={classes.contactform} onSubmit={openMsg}>
               <label className={classes.label}>Email</label>
-              <input type='email' className={classes.input} required value={userdata.email} onChange={(e) => setuserdata({ ...userdata, email: e.target.value })} placeholder='Enter your Email'></input>
-              <label className={classes.label} pla>Passowrd</label>
-              <input type='password' className={classes.input} required value={userdata.password} onChange={(e) => setuserdata({ ...userdata, password: e.target.value })} placeholder='**************'></input>
-              <button className={classes.signin} onClick={openMsg} type='submit' >Sign In</button>
-              {/* <button className={classes.forgot}>Forgot Password ? </button> */}
-              {/* <p className={classes.others}>Sign In using : </p>
-              <div className={classes.btn}>
-                <button className={classes.go_btn}
-                  data-aos="zoom-in-left"><img className={classes.google_btn} src={google} alt="" /></button>
-                <button className={classes.go_btn} data-aos="zoom-in-up"><img className={classes.discord_btn} src={discord} alt="" /></button>
-                <button className={classes.go_btn} data-aos="zoom-in-down"><img className={classes.github_btn} src={github} alt="" /></button>
-                <button className={classes.go_btn} data-aos="zoom-in-right"><img className={classes.linkedin_btn} src={linkedin} alt="" onClick={() => submitform()} /></button>
-              </div> */}
+              <input
+                type="email"
+                className={classes.input}
+                value={userdata.email}
+                onChange={(e) =>
+                  setUserdata({ ...userdata, email: e.target.value })
+                }
+                required
+              />
+
+              <label className={classes.label}>Password</label>
+              <input
+                type="password"
+                className={classes.input}
+                value={userdata.password}
+                onChange={(e) =>
+                  setUserdata({ ...userdata, password: e.target.value })
+                }
+                required
+              />
+
+              <button className={classes.signin} type="submit">
+                Sign In
+              </button>
             </form>
           </motion.div>
         </div>
       </div>
+
       <AnimatePresence>
-        {logged &&
-          <motion.div className={classes.message}
-            initial={{ opacity: 0, transform: "scale(0)" }}
-            animate={{ opacity: 1, transform: "scale(1)" }}
-            exit={{ opacity: 0, transform: "scale(1)" }}
-            transition={{ duration: .5 }}
+        {loginError && (
+          <motion.div
+            className={classes.message}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
           >
             <span onClick={closeMsg}></span>
-            <h1>Sorry 😕😕</h1>
-            <h2>Seems Like You are not a GDSC Team Member</h2>
+            <h1>Sorry 😕</h1>
+            <h2>Invalid email or password</h2>
           </motion.div>
-        }
+        )}
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

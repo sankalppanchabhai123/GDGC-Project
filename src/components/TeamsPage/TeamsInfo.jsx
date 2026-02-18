@@ -146,6 +146,15 @@ let info = {
                 github: "",
                 linkedIn: "",
             },
+             {
+                name: "Tejas Babar",
+                position: "Web Coordinator",
+                img:s1,
+                shadow: "#F74037",
+                insta: "",
+                github: "",
+                linkedIn: "",
+            },
             {
                 name: "Vedant Bodkhe",
                 position: "Tech Coordinator",
@@ -204,6 +213,7 @@ let info = {
                 github: "",
                 linkedIn: "",
             },
+           
         ]},
         management: {
             lead:[
